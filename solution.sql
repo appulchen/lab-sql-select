@@ -29,31 +29,30 @@ group by
 order by 
 	authors.au_id desc,
 	publishers.pub_name desc;
-	
+
 --Best Selling Authors
 SELECT
 	a.au_id as "Author ID",
 	a.au_lname as "Last name",
 	a.au_fname as "First name",
-	sum(s.qty) as "total"
+	sum(t.ytd_sales) as "Total"
 from authors a 
 join titleauthor ta on a.au_id=ta.au_id
 join titles t on ta.title_id=t.title_id
 join sales s on t.title_id=s.title_id
 group by a.au_id, a.au_lname, a.au_fname
-order by total DESC limit 3;
+order by "total" DESC limit 3;
    
 --Best Selling Authors Ranking
 SELECT
 	a.au_id as "Author ID",
 	a.au_lname as "Last name",
 	a.au_fname as "First name",
-	coalesce(sum(s.qty), 0) as "Total"
+	coalesce(sum(t.ytd_sales), 0) as "Total"
 from authors a   
-join titleauthor ta on a.au_id=ta.au_id
-join titles t on ta.title_id=t.title_id
-join sales s on t.title_id=s.title_id
+left join titleauthor ta on a.au_id=ta.au_id
+left join titles t on ta.title_id=t.title_id
 group by a.au_id, a.au_lname, a.au_fname
-order by total desc;
+order by "total" desc;
 	
-print(hallo)
+
